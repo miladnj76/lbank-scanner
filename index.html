@@ -3,8 +3,8 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>اسکنر LBank Spot ـ ۵۰۰ ارز</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>اسکنر رایگان LBank Spot</title>
 <style>
 :root{color-scheme:dark}
 *{box-sizing:border-box}
@@ -15,8 +15,8 @@ p{color:#aab6d3;line-height:1.8}
 .panel{background:#141c31;border:1px solid #293451;border-radius:14px;padding:14px;margin:12px 0}
 .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 label{display:block;color:#b8c5e2;font-size:13px;margin-bottom:6px}
-input,select,button{width:100%;padding:12px;border-radius:9px;border:1px solid #354363;background:#0d1427;color:#fff;font-size:15px}
-button{background:#2463eb;border:0;font-weight:bold}
+input,select,button{width:100%;padding:12px;border-radius:9px;border:1px solid #354363;background:#0d1427;color:white;font-size:15px}
+button{background:#2463eb;border:0;font-weight:bold;cursor:pointer}
 button:disabled{opacity:.5}
 .secondary{background:#27324b}
 .status{padding:12px;background:#0d1427;border-radius:9px;line-height:1.9;overflow-wrap:anywhere}
@@ -31,8 +31,8 @@ th{background:#17213a;color:#9fbaff;position:sticky;top:0}
 </head>
 <body>
 <main>
-<h1>🔎 اسکنر LBank Spot</h1>
-<p>اسکن مرحله‌ای بازار USDT، بررسی کندل‌ها و رتبه‌بندی تکنیکال آزمایشی.</p>
+<h1>🔎 اسکنر رایگان LBank Spot</h1>
+<p>اسکن مرحله‌ای جفت‌ارزهای USDT، بررسی کندل‌ها و امتیازدهی تکنیکال آزمایشی.</p>
 
 <div class="panel">
  <div class="controls">
@@ -42,11 +42,11 @@ th{background:#17213a;color:#9fbaff;position:sticky;top:0}
     <option value="500" selected>۵۰۰ ارز</option>
     <option value="600">۶۰۰ ارز</option>
     <option value="800">۸۰۰ ارز</option>
-    <option value="99999">همه ارزهای دریافت‌شده</option>
+    <option value="99999">همه ارزها</option>
    </select>
   </div>
   <div>
-   <label for="minTurnover">حداقل گردش ۲۴ساعته (USDT)</label>
+   <label for="minTurnover">حداقل گردش ۲۴ ساعته (USDT)</label>
    <input id="minTurnover" type="number" min="0" value="0">
   </div>
   <div>
@@ -69,16 +69,18 @@ th{background:#17213a;color:#9fbaff;position:sticky;top:0}
    </select>
   </div>
  </div>
+
  <div class="controls" style="margin-top:12px">
   <button id="scan">▶ شروع اسکن</button>
   <button id="stop" class="secondary">■ توقف خودکار</button>
  </div>
+
  <div id="status" class="status" style="margin-top:12px">آماده اسکن.</div>
- <p class="small">برای بررسی صدها ارز، اسکن زمان می‌برد. صفحه را باز نگه دار. تعداد واقعی با توجه به پاسخ API و محدودیت شبکه تعیین می‌شود.</p>
+ <p class="small">صفحه را هنگام اسکن باز نگه دار. هدف ۵۰۰ ارز تضمین نمی‌کند که API به همین تعداد داده قابل استفاده ارائه دهد.</p>
 </div>
 
 <div class="panel">
- <strong>📊 نتایج</strong>
+ <strong>📊 نتایج اسکن</strong>
  <p id="summary">هنوز اسکن انجام نشده است.</p>
  <div class="tablewrap">
   <table>
@@ -97,112 +99,226 @@ th{background:#17213a;color:#9fbaff;position:sticky;top:0}
 </div>
 
 <div class="panel">
- <strong>⚠️ شفافیت</strong>
+ <strong>⚠️ شفافیت داده‌ها</strong>
  <p class="small">
-این نسخه جفت‌ارزهای USDT را بررسی می‌کند، نه دسته رسمی MEME.
-امتیاز ۳۵تایی آزمایشی است و به معنی اجرای ۳۵ فیلتر اختصاصی یا تضمین پامپ نیست.
-مارکت‌کپ، دفتر سفارشات و جریان خالص خرید در این امتیاز تأیید نمی‌شوند.
- </p>
+این نسخه بازار USDT را اسکن می‌کند و دسته رسمی MEME را تشخیص نمی‌دهد.
+امتیاز ۳۵تایی آزمایشی است؛ مارکت‌کپ، دفتر سفارشات و جذب واقعی عرضه تأیید نمی‌شوند.
+  </p>
 </div>
 </main>
 
 <script>
 "use strict";
 
-const API = "https://api.lbkex.com/v2/";
-const $ = id => document.getElementById(id);
+const BASES = [
+ "https://api.lbkex.com/v2/",
+ "https://api.lbkex.net/v2/",
+ "https://api.lbank.info/v2/"
+];
 
+const PROXIES = [
+ url => "https://corsproxy.io/?" + encodeURIComponent(url),
+ url => "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
+];
+
+const $ = id => document.getElementById(id);
 let busy = false;
 let timer = null;
 let runId = 0;
 
-function setStatus(s){ $("status").textContent = s; }
 function num(v){
  const n = Number(v);
  return Number.isFinite(n) ? n : 0;
 }
+
 function fmt(v){
  return Number.isFinite(v)
   ? v.toLocaleString("en-US",{maximumFractionDigits:8})
   : "—";
 }
-function sleep(ms){
- return new Promise(resolve=>setTimeout(resolve,ms));
+
+function setStatus(s){
+ $("status").textContent = s;
 }
 
-async function getJSON(url){
- let errors = [];
+function sleep(ms){
+ return new Promise(resolve => setTimeout(resolve,ms));
+}
 
- // ابتدا API مستقیم؛ سپس پراکسی عمومی در صورت نیاز
- const urls = [
-  url,
-  "https://corsproxy.io/?" + encodeURIComponent(url)
- ];
+async function fetchJSON(url){
+ const errors = [];
 
- for(const target of urls){
+ // اول اتصال مستقیم به دامنه‌های API
+ for(const base of BASES){
   try{
    const controller = new AbortController();
-   const timeout = setTimeout(()=>controller.abort(),15000);
-   const response = await fetch(target,{
-    cache:"no-store",
-    signal:controller.signal
-   });
-   clearTimeout(timeout);
+   const timeout = setTimeout(()=>controller.abort(),12000);
 
-   if(!response.ok) throw new Error("HTTP "+response.status);
-   const json = await response.json();
-
-   if(json && (
-    json.result === false ||
-    json.result === "false"
-   )){
-    throw new Error(json.msg || "API error");
+   let response;
+   try{
+    response = await fetch(base + url,{
+     cache:"no-store",
+     signal:controller.signal
+    });
+   }finally{
+    clearTimeout(timeout);
    }
 
-   return json;
+   if(!response.ok) throw new Error("HTTP "+response.status);
+
+   const data = await response.json();
+   if(data && (
+    data.result === false ||
+    data.result === "false"
+   )){
+    throw new Error(data.msg || "API error");
+   }
+
+   return data;
   }catch(e){
    errors.push(e.message || "Load failed");
   }
  }
- throw new Error(errors.join(" | "));
+
+ // اگر اتصال مستقیم ناموفق بود، پراکسی‌ها را امتحان کن
+ for(const base of BASES){
+  const original = base + url;
+
+  for(const proxy of PROXIES){
+   try{
+    const controller = new AbortController();
+    const timeout = setTimeout(()=>controller.abort(),15000);
+
+    let response;
+    try{
+     response = await fetch(proxy(original),{
+      cache:"no-store",
+      signal:controller.signal
+     });
+    }finally{
+     clearTimeout(timeout);
+    }
+
+    if(!response.ok) throw new Error("HTTP "+response.status);
+
+    const data = await response.json();
+    if(data && (
+     data.result === false ||
+     data.result === "false"
+    )){
+     throw new Error(data.msg || "API error");
+    }
+
+    return data;
+   }catch(e){
+    errors.push(e.message || "Proxy failed");
+   }
+  }
+ }
+
+ throw new Error(
+  "دسترسی به API ناموفق بود. " +
+  errors.slice(-6).join(" | ")
+ );
 }
 
 function unwrap(json){
  if(json && (
   json.result === false ||
   json.result === "false"
- )) throw new Error(json.msg || "API error");
+ )){
+  throw new Error(json.msg || "API error");
+ }
  return json && json.data != null ? json.data : json;
 }
 
+function normalizeTicker(item){
+ const t = item.ticker || item;
+ return {
+  symbol:String(item.symbol || t.symbol || "").toLowerCase(),
+  price:num(t.latest ?? t.last ?? t.close),
+  change:num(t.change),
+  turnover:num(t.turnover),
+  volume:num(t.vol),
+  high:num(t.high),
+  low:num(t.low)
+ };
+}
+
 async function getTickers(){
- const json = await getJSON(API+"ticker/24hr.do?symbol=all");
- const data = unwrap(json);
- if(!Array.isArray(data)){
-  throw new Error("فهرست بازار آرایه نیست.");
+ // روش اول: دریافت همه تیکرها
+ try{
+  const json = await fetchJSON("ticker/24hr.do?symbol=all");
+  const data = unwrap(json);
+
+  if(Array.isArray(data)){
+   const rows = data.map(normalizeTicker)
+    .filter(x=>x.symbol.endsWith("_usdt") && x.price>0);
+
+   if(rows.length) return rows;
+  }
+ }catch(e){
+  setStatus("دریافت یک‌جای تیکرها ناموفق شد؛ تلاش برای دریافت فهرست نمادها...");
  }
 
- return data.map(item=>{
-  const t = item.ticker || item;
-  return {
-   symbol:String(item.symbol || t.symbol || "").toLowerCase(),
-   price:num(t.latest || t.last || t.close),
-   change:num(t.change),
-   turnover:num(t.turnover),
-   volume:num(t.vol),
-   high:num(t.high),
-   low:num(t.low)
-  };
- }).filter(x=>x.symbol.endsWith("_usdt") && x.price>0);
+ // روش دوم: دریافت فهرست جفت‌ارزها و سپس تیکرهای جداگانه
+ const pairsJson = await fetchJSON("currencyPairs.do");
+ const pairs = unwrap(pairsJson);
+
+ if(!Array.isArray(pairs)){
+  throw new Error("API فهرست جفت‌ارزها را به شکل قابل‌خواندن برنگرداند.");
+ }
+
+ const symbols = [...new Set(
+  pairs.map(x=>String(typeof x === "string" ? x : x.symbol || "").toLowerCase())
+ )].filter(s=>s.endsWith("_usdt"));
+
+ if(!symbols.length){
+  throw new Error("جفت‌ارز USDT در فهرست دریافتی پیدا نشد.");
+ }
+
+ let done = 0;
+ const tickers = [];
+
+ await mapLimit(symbols,3,async symbol=>{
+  try{
+   const json = await fetchJSON(
+    "ticker/24hr.do?symbol="+encodeURIComponent(symbol)
+   );
+   const data = unwrap(json);
+   const items = Array.isArray(data) ? data : [data];
+
+   for(const item of items){
+    const row = normalizeTicker(item);
+    if(row.symbol && row.price>0) tickers.push(row);
+   }
+  }catch(e){
+   // خطای هر نماد جداگانه ثبت می‌شود
+   tickers.push({symbol,error:e.message});
+  }
+
+  done++;
+  setStatus(`دریافت تیکرها: ${done}/${symbols.length}`);
+ },()=>{});
+
+ const unique = new Map();
+ for(const item of tickers){
+  if(!item.error && item.symbol) unique.set(item.symbol,item);
+ }
+
+ if(!unique.size){
+  throw new Error("هیچ تیکر معتبری دریافت نشد؛ اتصال یا دسترسی API را بررسی کن.");
+ }
+
+ return [...unique.values()];
 }
 
 async function getCandles(symbol){
- const time = Math.floor(Date.now()/60000)*60;
- const url = API+"kline.do?symbol="+
-  encodeURIComponent(symbol)+
-  "&type=minute1&size=30&time="+(time-29*60);
+ const now = Math.floor(Date.now()/60000)*60;
+ const url = "kline.do?symbol="+encodeURIComponent(symbol)+
+  "&type=minute1&size=30&time="+(now-29*60);
 
- const json = await getJSON(url);
+ const json = await fetchJSON(url);
  const data = unwrap(json);
  if(!Array.isArray(data)) return [];
 
@@ -221,14 +337,17 @@ async function getCandles(symbol){
 }
 
 function scoreCoin(coin,c){
- if(c.length<5) return {
-  ...coin,candles:c.length,score:0,
-  volRatio:0,status:"داده کندلی ناکافی"
- };
+ if(c.length<5){
+  return {
+   ...coin,candles:c.length,score:0,volRatio:0,
+   status:"داده کندلی ناکافی"
+  };
+ }
 
  const last=c[c.length-1];
  const previous=c[c.length-2];
  const volumes=c.map(x=>x.volume);
+
  const changes=c.slice(1).map((x,i)=>
   c[i].close ? (x.close/c[i].close-1)*100 : 0
  );
@@ -243,10 +362,10 @@ function scoreCoin(coin,c){
 
  const candleRange=last.close>0
   ? (last.high-last.low)/last.close*100 : 0;
- const highs=c.map(x=>x.high);
- const lows=c.map(x=>x.low);
+
  const totalRange=last.close>0
-  ? (Math.max(...highs)-Math.min(...lows))/last.close*100 : 0;
+  ? (Math.max(...c.map(x=>x.high))-
+     Math.min(...c.map(x=>x.low)))/last.close*100 : 0;
 
  const start=c[Math.max(0,c.length-6)];
  const recentChange=start.close>0
@@ -260,6 +379,7 @@ function scoreCoin(coin,c){
 
  const priceVsHigh=coin.high>0
   ? (coin.high-coin.price)/coin.high*100 : 100;
+
  const range24=coin.high>coin.low
   ? (coin.price-coin.low)/(coin.high-coin.low) : 0.5;
 
@@ -272,14 +392,23 @@ function scoreCoin(coin,c){
   coin.change>0,
   coin.change<0,
   Math.abs(coin.change)<3,
-  ratio>=1.2,ratio>=1.5,ratio>=2,ratio>=3,
+  ratio>=1.2,
+  ratio>=1.5,
+  ratio>=2,
+  ratio>=3,
   recentVol>oldAvg,
-  recentChange<3,recentChange>-3,
+  recentChange<3,
+  recentChange>-3,
   recentChange>-1 && recentChange<1,
-  recentChange>0,recentChange<0,
-  totalRange<3,totalRange<5,totalRange<8,
-  candleRange<1,candleRange<2,
-  green/c.length>0.5,green/c.length>0.6,
+  recentChange>0,
+  recentChange<0,
+  totalRange<3,
+  totalRange<5,
+  totalRange<8,
+  candleRange<1,
+  candleRange<2,
+  green/c.length>0.5,
+  green/c.length>0.6,
   last.close>=last.open,
   previous ? last.close>=previous.close : false,
   priceVsHigh<5,
@@ -302,8 +431,8 @@ function scoreCoin(coin,c){
  }
 
  return {
-  ...coin,candles:c.length,avgVol,
-  volRatio:ratio,recentChange,score,status
+  ...coin,candles:c.length,avgVol,volRatio:ratio,
+  recentChange,score,status
  };
 }
 
@@ -315,18 +444,21 @@ async function mapLimit(items,limit,worker,onProgress){
   while(true){
    const i=index++;
    if(i>=items.length) return;
+
    try{
     out[i]=await worker(items[i],i);
    }catch(e){
     out[i]={...items[i],error:e.message || "خطا"};
    }
-   onProgress(i+1,items.length);
+
+   if(onProgress) onProgress(i+1,items.length);
   }
  }
 
  await Promise.all(
   Array.from({length:Math.min(limit,items.length)},()=>runner())
  );
+
  return out;
 }
 
@@ -338,91 +470,83 @@ function renderRows(rows){
 
  if(!filtered.length){
   $("results").innerHTML=
-   '<tr><td colspan="7">نتیجه‌ای با حداقل امتیاز انتخاب‌شده وجود ندارد.</td></tr>';
+   '<tr><td colspan="7">نامزدی با این امتیاز پیدا نشد.</td></tr>';
   return;
  }
 
  $("results").innerHTML=filtered.map(x=>`
- <tr>
-  <td><b>${x.symbol.toUpperCase()}</b></td>
-  <td>${fmt(x.price)}</td>
-  <td class="${x.change>=0?"good":"bad"}">${fmt(x.change)}٪</td>
-  <td>${fmt(x.turnover)}</td>
-  <td>${x.candles} · ${x.volRatio.toFixed(2)}×</td>
-  <td class="score">${x.score}/35</td>
-  <td>${x.status}</td>
- </tr>`).join("");
+  <tr>
+   <td><b>${x.symbol.toUpperCase()}</b></td>
+   <td>${fmt(x.price)}</td>
+   <td class="${x.change>=0?"good":"bad"}">${fmt(x.change)}٪</td>
+   <td>${fmt(x.turnover)}</td>
+   <td>${x.candles} کندل · ${x.volRatio.toFixed(2)}×</td>
+   <td class="score">${x.score}/35</td>
+   <td>${x.status}</td>
+  </tr>
+ `).join("");
 }
 
 async function scan(){
  if(busy) return;
  busy=true;
- const myRun=++runId;
+ const currentRun=++runId;
  $("scan").disabled=true;
  $("results").innerHTML=
-  '<tr><td colspan="7">در حال دریافت فهرست بازار...</td></tr>';
-
- let tickers=[],results=[],errors=0,valid=0;
+  '<tr><td colspan="7">در حال دریافت داده‌ها...</td></tr>';
 
  try{
-  setStatus("مرحله ۱: دریافت جفت‌ارزهای USDT از LBank...");
-  tickers=await getTickers();
+  setStatus("مرحله ۱: دریافت فهرست بازار...");
+  const tickers=await getTickers();
 
   const minTurnover=Math.max(0,num($("minTurnover").value));
-  const target=num($("count").value);
+  const count=num($("count").value);
 
   const candidates=tickers
    .filter(x=>x.turnover>=minTurnover)
    .sort((a,b)=>b.turnover-a.turnover)
-   .slice(0,target);
+   .slice(0,count);
 
   if(!candidates.length){
-   throw new Error("هیچ جفت‌ارزی با شرایط انتخاب‌شده پیدا نشد.");
+   throw new Error("ارزی با گردش انتخاب‌شده پیدا نشد.");
   }
 
-  setStatus(
-   `فهرست دریافتی: ${tickers.length} جفت‌ارز USDT؛ `+
-   `هدف: ${candidates.length}. شروع بررسی کندل‌ها...`
-  );
+  let finished=0;
+  setStatus(`تیکر معتبر: ${tickers.length} | هدف این نوبت: ${candidates.length}`);
 
-  results=await mapLimit(candidates,3,async coin=>{
-   // فاصله کوتاه برای کاهش فشار روی API
+  const results=await mapLimit(candidates,3,async coin=>{
    const candles=await getCandles(coin.symbol);
-   if(candles.length<5){
-    return {
-     ...coin,candles:candles.length,score:0,
-     volRatio:0,status:"داده کندلی ناکافی"
-    };
-   }
    return scoreCoin(coin,candles);
   },(done,total)=>{
-   if(myRun!==runId) return;
-   setStatus(`در حال بررسی کندل‌ها: ${done}/${total}`);
-   $("summary").textContent=
-    `جفت‌ارزهای دریافتی: ${tickers.length} | هدف بررسی: ${total} | پیشرفت: ${done}/${total}`;
+   finished=done;
+   if(currentRun===runId){
+    setStatus(`بررسی کندل‌ها: ${done}/${total}`);
+    $("summary").textContent=
+     `تیکر معتبر: ${tickers.length} | هدف: ${total} | پیشرفت: ${done}/${total}`;
+   }
   });
 
-  errors=results.filter(x=>x.error).length;
-  valid=results.filter(x=>!x.error && x.candles>=5).length;
+  const errors=results.filter(x=>x.error).length;
+  const valid=results.filter(x=>!x.error && x.candles>=5).length;
+  const insufficient=results.filter(x=>!x.error && x.candles<5).length;
+
   renderRows(results.filter(x=>!x.error));
 
   $("summary").textContent=
-   `جفت‌ارزهای دریافتی: ${tickers.length} | `+
-   `تعداد انتخاب‌شده: ${candidates.length} | `+
-   `دارای داده معتبر: ${valid} | خطا: ${errors} | `+
-   `داده کندلی ناکافی: ${results.filter(x=>!x.error && x.candles<5).length}`;
+   `تیکر معتبر: ${tickers.length} | انتخاب‌شده: ${candidates.length} | `+
+   `دارای کندل معتبر: ${valid} | کندل ناکافی: ${insufficient} | خطا: ${errors}`;
 
   setStatus(
-   `اسکن پایان یافت. بررسی‌شده: ${candidates.length} از ${tickers.length}. `+
-   (errors ? `خطا در ${errors} ارز؛ نتیجه کامل نیست.` : "درخواست‌ها بدون خطای ثبت‌شده پایان یافتند.")+
-   ` زمان: ${new Date().toLocaleTimeString("fa-IR")}`
+   `اسکن تمام شد: ${finished}/${candidates.length} درخواست پردازش شد. `+
+   `دارای داده کندلی معتبر: ${valid}؛ خطا: ${errors}. `+
+   `زمان: ${new Date().toLocaleTimeString("fa-IR")}`
   );
 
  }catch(e){
   setStatus("خطا: "+(e.message || "دریافت داده ناموفق بود"));
-  $("summary").textContent="اسکن کامل نشد.";
+  $("summary").textContent="اسکن کامل نشد؛ علت در پیام بالا نمایش داده شده است.";
   $("results").innerHTML=
-   '<tr><td colspan="7">دریافت داده ناموفق بود؛ پیام خطا را بررسی کن.</td></tr>';
+   '<tr><td colspan="7">داده کافی دریافت نشد.</td></tr>';
  }finally{
   busy=false;
   $("scan").disabled=false;
@@ -433,16 +557,18 @@ function configureAuto(){
  if(timer) clearInterval(timer);
  timer=null;
  const minutes=num($("interval").value);
+
  if(minutes>0){
   timer=setInterval(()=>{
    if(!document.hidden && !busy) scan();
   },minutes*60000);
-  setStatus("اسکن خودکار فعال شد؛ برای اسکن اول دکمه شروع را بزن.");
+  setStatus("اسکن خودکار فعال شد؛ برای اجرای نخست دکمه شروع را بزن.");
  }
 }
 
 $("scan").addEventListener("click",scan);
 $("interval").addEventListener("change",configureAuto);
+
 $("stop").addEventListener("click",()=>{
  if(timer) clearInterval(timer);
  timer=null;
