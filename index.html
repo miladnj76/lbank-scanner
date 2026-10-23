@@ -4,126 +4,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>اسکنر MEME صرافی LBank</title>
+<title>اسکنر LBank Spot ـ ۵۰۰ ارز</title>
 <style>
 :root{color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:#0b1020;color:#edf2ff;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:14px}
-main{max-width:1050px;margin:auto}
-h1{font-size:23px;margin:8px 0}
+body{margin:0;padding:14px;background:#0b1020;color:#edf2ff;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+main{max-width:1100px;margin:auto}
+h1{font-size:22px}
 p{color:#aab6d3;line-height:1.8}
 .panel{background:#141c31;border:1px solid #293451;border-radius:14px;padding:14px;margin:12px 0}
-.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 label{display:block;color:#b8c5e2;font-size:13px;margin-bottom:6px}
 input,select,button{width:100%;padding:12px;border-radius:9px;border:1px solid #354363;background:#0d1427;color:#fff;font-size:15px}
-button{background:#2463eb;border:0;font-weight:bold;cursor:pointer}
+button{background:#2463eb;border:0;font-weight:bold}
 button:disabled{opacity:.5}
 .secondary{background:#27324b}
-.status{padding:12px;border-radius:9px;background:#0d1427;line-height:1.8;overflow-wrap:anywhere}
+.status{padding:12px;background:#0d1427;border-radius:9px;line-height:1.9;overflow-wrap:anywhere}
 .small{font-size:12px;color:#98a9cc}
 .tablewrap{overflow:auto;border-radius:10px}
-table{width:100%;border-collapse:collapse;min-width:760px}
+table{width:100%;min-width:780px;border-collapse:collapse}
 th,td{padding:10px 8px;border-bottom:1px solid #293451;text-align:center;font-size:13px}
-th{color:#9fbaff;background:#17213a;position:sticky;top:0}
-.good{color:#52e0a1}
-.bad{color:#ff8585}
+th{background:#17213a;color:#9fbaff;position:sticky;top:0}
+.good{color:#52e0a1}.bad{color:#ff8585}
 .score{font-weight:bold;color:#ffd166}
-.pill{display:inline-block;border-radius:20px;background:#26395f;padding:4px 8px;margin:2px;font-size:12px}
 </style>
 </head>
 <body>
 <main>
-<h1>🔎 اسکنر ارزهای MEME در LBank Spot</h1>
-<p>
-بررسی حداکثر ۲۰۰ جفت‌ارز MEME از بازار اسپات USDT،
-بر اساس گردش معاملات، حجم کندل‌ها، فشردگی قیمت و نشانه‌های اولیه پیش‌پامپ.
-</p>
+<h1>🔎 اسکنر LBank Spot</h1>
+<p>اسکن مرحله‌ای بازار USDT، بررسی کندل‌ها و رتبه‌بندی تکنیکال آزمایشی.</p>
 
 <div class="panel">
-  <div class="controls">
-    <div>
-      <label for="count">تعداد ارزهای بررسی‌شونده</label>
-      <select id="count">
-        <option value="200" selected>۲۰۰ ارز</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="minTurnover">حداقل گردش ۲۴ ساعته (USDT)</label>
-      <input id="minTurnover" type="number" value="10000" min="0">
-    </div>
-
-    <div>
-      <label for="minScore">حداقل امتیاز از ۳۵</label>
-      <select id="minScore">
-        <option value="0">همه</option>
-        <option value="10">۱۰</option>
-        <option value="15" selected>۱۵</option>
-        <option value="20">۲۰</option>
-        <option value="25">۲۵</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="interval">اسکن خودکار</label>
-      <select id="interval">
-        <option value="0">خاموش</option>
-        <option value="5">هر ۵ دقیقه</option>
-        <option value="15">هر ۱۵ دقیقه</option>
-        <option value="30">هر ۳۰ دقیقه</option>
-      </select>
-    </div>
+ <div class="controls">
+  <div>
+   <label for="count">تعداد هدف اسکن</label>
+   <select id="count">
+    <option value="500" selected>۵۰۰ ارز</option>
+    <option value="600">۶۰۰ ارز</option>
+    <option value="800">۸۰۰ ارز</option>
+    <option value="99999">همه ارزهای دریافت‌شده</option>
+   </select>
   </div>
-
-  <div class="controls" style="margin-top:12px">
-    <button id="scan">▶ شروع اسکن</button>
-    <button id="stop" class="secondary">■ توقف اسکن خودکار</button>
+  <div>
+   <label for="minTurnover">حداقل گردش ۲۴ساعته (USDT)</label>
+   <input id="minTurnover" type="number" min="0" value="0">
   </div>
-
-  <div id="status" class="status" style="margin-top:12px">
-    آماده اسکن. برای شروع دکمه را بزن.
+  <div>
+   <label for="minScore">حداقل امتیاز از ۳۵</label>
+   <select id="minScore">
+    <option value="0">همه</option>
+    <option value="10">۱۰</option>
+    <option value="15" selected>۱۵</option>
+    <option value="20">۲۰</option>
+    <option value="25">۲۵</option>
+   </select>
   </div>
-
-  <p class="small">
-    اسکن خودکار فقط زمانی کار می‌کند که صفحه باز باشد.
-    سقف بررسی ۲۰۰ نماد است؛ تعداد واقعی به نمادهای قابل شناسایی،
-    گردش معاملات و دسترسی API بستگی دارد.
-  </p>
+  <div>
+   <label for="interval">اسکن خودکار</label>
+   <select id="interval">
+    <option value="0">خاموش</option>
+    <option value="5">هر ۵ دقیقه</option>
+    <option value="15">هر ۱۵ دقیقه</option>
+    <option value="30">هر ۳۰ دقیقه</option>
+   </select>
+  </div>
+ </div>
+ <div class="controls" style="margin-top:12px">
+  <button id="scan">▶ شروع اسکن</button>
+  <button id="stop" class="secondary">■ توقف خودکار</button>
+ </div>
+ <div id="status" class="status" style="margin-top:12px">آماده اسکن.</div>
+ <p class="small">برای بررسی صدها ارز، اسکن زمان می‌برد. صفحه را باز نگه دار. تعداد واقعی با توجه به پاسخ API و محدودیت شبکه تعیین می‌شود.</p>
 </div>
 
 <div class="panel">
-  <strong>📊 نتایج اسکن MEME</strong>
-  <p id="summary">هنوز اسکن انجام نشده است.</p>
-  <div class="tablewrap">
-    <table>
-      <thead>
-        <tr>
-          <th>ارز</th>
-          <th>قیمت</th>
-          <th>تغییر ۲۴ ساعته</th>
-          <th>گردش ۲۴ ساعته</th>
-          <th>کندل‌ها و نسبت حجم</th>
-          <th>امتیاز /۳۵</th>
-          <th>وضعیت</th>
-        </tr>
-      </thead>
-      <tbody id="results">
-        <tr><td colspan="7">هنوز داده‌ای دریافت نشده است.</td></tr>
-      </tbody>
-    </table>
-  </div>
+ <strong>📊 نتایج</strong>
+ <p id="summary">هنوز اسکن انجام نشده است.</p>
+ <div class="tablewrap">
+  <table>
+   <thead>
+    <tr>
+     <th>ارز</th><th>قیمت</th><th>تغییر ۲۴ساعته</th>
+     <th>گردش ۲۴ساعته</th><th>کندل / نسبت حجم</th>
+     <th>امتیاز /۳۵</th><th>وضعیت</th>
+    </tr>
+   </thead>
+   <tbody id="results">
+    <tr><td colspan="7">منتظر شروع اسکن.</td></tr>
+   </tbody>
+  </table>
+ </div>
 </div>
 
 <div class="panel">
-  <strong>⚠️ شفافیت و محدودیت داده‌ها</strong>
-  <p class="small">
-    فهرست MEME زیر یک فهرست اولیه از نمادهای شناخته‌شده است و
-    دسته‌بندی رسمی و زنده LBank نیست. نمادهای حذف‌شده یا تازه‌لیست‌شده
-    ممکن است در آن نباشند. امتیاز ۳۵تایی آزمایشی است و اجرای واقعی
-    تمام ۳۵ فیلتر اختصاصی را نشان نمی‌دهد. مارکت‌کپ، دفتر سفارشات،
-    جذب فروشنده و جریان خالص خرید با این نسخه تأیید نمی‌شوند.
-    امتیاز بالا تضمین پامپ نیست.
-  </p>
+ <strong>⚠️ شفافیت</strong>
+ <p class="small">
+این نسخه جفت‌ارزهای USDT را بررسی می‌کند، نه دسته رسمی MEME.
+امتیاز ۳۵تایی آزمایشی است و به معنی اجرای ۳۵ فیلتر اختصاصی یا تضمین پامپ نیست.
+مارکت‌کپ، دفتر سفارشات و جریان خالص خرید در این امتیاز تأیید نمی‌شوند.
+ </p>
 </div>
 </main>
 
@@ -131,568 +110,344 @@ th{color:#9fbaff;background:#17213a;position:sticky;top:0}
 "use strict";
 
 const API = "https://api.lbkex.com/v2/";
-const PROXY = "https://proxy.cors.dev/";
-
 const $ = id => document.getElementById(id);
 
 let busy = false;
 let timer = null;
+let runId = 0;
 
-// فهرست اولیه نمادهای MEME.
-// این فهرست باید با دسته‌بندی و نمادهای فعال LBank تطبیق داده شود.
-// وجود نماد در این مجموعه به معنی تأیید لیست‌شدن فعلی نیست.
-const MEME_SYMBOLS = new Set(`
-doge_usdt
-shib_usdt
-pepe_usdt
-floki_usdt
-bonk_usdt
-wif_usdt
-bome_usdt
-turbo_usdt
-meme_usdt
-brett_usdt
-popcat_usdt
-neiro_usdt
-mog_usdt
-ponke_usdt
-myro_usdt
-cat_usdt
-mew_usdt
-goat_usdt
-act_usdt
-pnut_usdt
-trump_usdt
-babydoge_usdt
-kishu_usdt
-wojak_usdt
-ladys_usdt
-sats_usdt
-ordi_usdt
-people_usdt
-1000sats_usdt
-1000pepe_usdt
-1000bonk_usdt
-1000floki_usdt
-1000shib_usdt
-1000lunc_usdt
-dog_usdt
-hamster_usdt
-not_usdt
-dogs_usdt
-wen_usdt
-sloth_usdt
-maneki_usdt
-neiroeth_usdt
-slerf_usdt
-bobo_usdt
-toshi_usdt
-degen_usdt
-higher_usdt
-ape_usdt
-mfer_usdt
-giga_usdt
-sigma_usdt
-retardio_usdt
-npc_usdt
-fwog_usdt
-michi_usdt
-andy_usdt
-powsche_usdt
-coq_usdt
-samo_usdt
-cheems_usdt
-catcoin_usdt
-mewing_usdt
-`.
-
-trim().toLowerCase().split(/\s+/).filter(Boolean));
-
-function setStatus(message) {
-  $("status").textContent = message;
+function setStatus(s){ $("status").textContent = s; }
+function num(v){
+ const n = Number(v);
+ return Number.isFinite(n) ? n : 0;
+}
+function fmt(v){
+ return Number.isFinite(v)
+  ? v.toLocaleString("en-US",{maximumFractionDigits:8})
+  : "—";
+}
+function sleep(ms){
+ return new Promise(resolve=>setTimeout(resolve,ms));
 }
 
-function num(value) {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : 0;
+async function getJSON(url){
+ let errors = [];
+
+ // ابتدا API مستقیم؛ سپس پراکسی عمومی در صورت نیاز
+ const urls = [
+  url,
+  "https://corsproxy.io/?" + encodeURIComponent(url)
+ ];
+
+ for(const target of urls){
+  try{
+   const controller = new AbortController();
+   const timeout = setTimeout(()=>controller.abort(),15000);
+   const response = await fetch(target,{
+    cache:"no-store",
+    signal:controller.signal
+   });
+   clearTimeout(timeout);
+
+   if(!response.ok) throw new Error("HTTP "+response.status);
+   const json = await response.json();
+
+   if(json && (
+    json.result === false ||
+    json.result === "false"
+   )){
+    throw new Error(json.msg || "API error");
+   }
+
+   return json;
+  }catch(e){
+   errors.push(e.message || "Load failed");
+  }
+ }
+ throw new Error(errors.join(" | "));
 }
 
-function fmt(value) {
-  if (!Number.isFinite(value)) return "—";
-  return value.toLocaleString("en-US", {
-    maximumFractionDigits: 8
+function unwrap(json){
+ if(json && (
+  json.result === false ||
+  json.result === "false"
+ )) throw new Error(json.msg || "API error");
+ return json && json.data != null ? json.data : json;
+}
+
+async function getTickers(){
+ const json = await getJSON(API+"ticker/24hr.do?symbol=all");
+ const data = unwrap(json);
+ if(!Array.isArray(data)){
+  throw new Error("فهرست بازار آرایه نیست.");
+ }
+
+ return data.map(item=>{
+  const t = item.ticker || item;
+  return {
+   symbol:String(item.symbol || t.symbol || "").toLowerCase(),
+   price:num(t.latest || t.last || t.close),
+   change:num(t.change),
+   turnover:num(t.turnover),
+   volume:num(t.vol),
+   high:num(t.high),
+   low:num(t.low)
+  };
+ }).filter(x=>x.symbol.endsWith("_usdt") && x.price>0);
+}
+
+async function getCandles(symbol){
+ const time = Math.floor(Date.now()/60000)*60;
+ const url = API+"kline.do?symbol="+
+  encodeURIComponent(symbol)+
+  "&type=minute1&size=30&time="+(time-29*60);
+
+ const json = await getJSON(url);
+ const data = unwrap(json);
+ if(!Array.isArray(data)) return [];
+
+ return data.map(row=>{
+  if(!Array.isArray(row) || row.length<6) return null;
+  return {
+   time:num(row[0]),
+   open:num(row[1]),
+   high:num(row[2]),
+   low:num(row[3]),
+   close:num(row[4]),
+   volume:num(row[5])
+  };
+ }).filter(x=>x && x.close>0)
+   .sort((a,b)=>a.time-b.time);
+}
+
+function scoreCoin(coin,c){
+ if(c.length<5) return {
+  ...coin,candles:c.length,score:0,
+  volRatio:0,status:"داده کندلی ناکافی"
+ };
+
+ const last=c[c.length-1];
+ const previous=c[c.length-2];
+ const volumes=c.map(x=>x.volume);
+ const changes=c.slice(1).map((x,i)=>
+  c[i].close ? (x.close/c[i].close-1)*100 : 0
+ );
+
+ const avgVol=volumes.reduce((a,b)=>a+b,0)/volumes.length;
+ const recent=volumes.slice(-5);
+ const recentVol=recent.reduce((a,b)=>a+b,0)/recent.length;
+ const older=volumes.slice(0,-5);
+ const oldAvg=older.length
+  ? older.reduce((a,b)=>a+b,0)/older.length : 0;
+ const ratio=oldAvg>0 ? recentVol/oldAvg : 0;
+
+ const candleRange=last.close>0
+  ? (last.high-last.low)/last.close*100 : 0;
+ const highs=c.map(x=>x.high);
+ const lows=c.map(x=>x.low);
+ const totalRange=last.close>0
+  ? (Math.max(...highs)-Math.min(...lows))/last.close*100 : 0;
+
+ const start=c[Math.max(0,c.length-6)];
+ const recentChange=start.close>0
+  ? (last.close/start.close-1)*100 : 0;
+
+ const green=c.filter(x=>x.close>=x.open).length;
+ const avgChange=changes.length
+  ? changes.reduce((a,b)=>a+b,0)/changes.length : 0;
+ const avgAbs=changes.length
+  ? changes.reduce((a,b)=>a+Math.abs(b),0)/changes.length : 0;
+
+ const priceVsHigh=coin.high>0
+  ? (coin.high-coin.price)/coin.high*100 : 100;
+ const range24=coin.high>coin.low
+  ? (coin.price-coin.low)/(coin.high-coin.low) : 0.5;
+
+ const tests=[
+  coin.turnover>=10000,
+  coin.turnover>=50000,
+  coin.turnover>=100000,
+  coin.change>-10 && coin.change<10,
+  coin.change>-5 && coin.change<5,
+  coin.change>0,
+  coin.change<0,
+  Math.abs(coin.change)<3,
+  ratio>=1.2,ratio>=1.5,ratio>=2,ratio>=3,
+  recentVol>oldAvg,
+  recentChange<3,recentChange>-3,
+  recentChange>-1 && recentChange<1,
+  recentChange>0,recentChange<0,
+  totalRange<3,totalRange<5,totalRange<8,
+  candleRange<1,candleRange<2,
+  green/c.length>0.5,green/c.length>0.6,
+  last.close>=last.open,
+  previous ? last.close>=previous.close : false,
+  priceVsHigh<5,
+  priceVsHigh>5 && priceVsHigh<20,
+  range24<0.7,
+  range24>0.25 && range24<0.75,
+  avgChange>-0.5 && avgChange<0.5,
+  avgAbs<1.5,
+  avgVol>0 && recentVol>avgVol,
+  coin.price>0
+ ];
+
+ const score=tests.filter(Boolean).length;
+ let status=score>=25 ? "هم‌خوانی تکنیکال بالا"
+  : score>=20 ? "قابل بررسی"
+  : score>=15 ? "شواهد متوسط" : "شواهد ضعیف";
+
+ if(ratio>=2 && Math.abs(recentChange)<3){
+  status+=" · افزایش حجم با حرکت محدود قیمت";
+ }
+
+ return {
+  ...coin,candles:c.length,avgVol,
+  volRatio:ratio,recentChange,score,status
+ };
+}
+
+async function mapLimit(items,limit,worker,onProgress){
+ const out=new Array(items.length);
+ let index=0;
+
+ async function runner(){
+  while(true){
+   const i=index++;
+   if(i>=items.length) return;
+   try{
+    out[i]=await worker(items[i],i);
+   }catch(e){
+    out[i]={...items[i],error:e.message || "خطا"};
+   }
+   onProgress(i+1,items.length);
+  }
+ }
+
+ await Promise.all(
+  Array.from({length:Math.min(limit,items.length)},()=>runner())
+ );
+ return out;
+}
+
+function renderRows(rows){
+ const minScore=num($("minScore").value);
+ const filtered=rows.filter(x=>
+  !x.error && x.score>=minScore
+ ).sort((a,b)=>b.score-a.score || b.turnover-a.turnover);
+
+ if(!filtered.length){
+  $("results").innerHTML=
+   '<tr><td colspan="7">نتیجه‌ای با حداقل امتیاز انتخاب‌شده وجود ندارد.</td></tr>';
+  return;
+ }
+
+ $("results").innerHTML=filtered.map(x=>`
+ <tr>
+  <td><b>${x.symbol.toUpperCase()}</b></td>
+  <td>${fmt(x.price)}</td>
+  <td class="${x.change>=0?"good":"bad"}">${fmt(x.change)}٪</td>
+  <td>${fmt(x.turnover)}</td>
+  <td>${x.candles} · ${x.volRatio.toFixed(2)}×</td>
+  <td class="score">${x.score}/35</td>
+  <td>${x.status}</td>
+ </tr>`).join("");
+}
+
+async function scan(){
+ if(busy) return;
+ busy=true;
+ const myRun=++runId;
+ $("scan").disabled=true;
+ $("results").innerHTML=
+  '<tr><td colspan="7">در حال دریافت فهرست بازار...</td></tr>';
+
+ let tickers=[],results=[],errors=0,valid=0;
+
+ try{
+  setStatus("مرحله ۱: دریافت جفت‌ارزهای USDT از LBank...");
+  tickers=await getTickers();
+
+  const minTurnover=Math.max(0,num($("minTurnover").value));
+  const target=num($("count").value);
+
+  const candidates=tickers
+   .filter(x=>x.turnover>=minTurnover)
+   .sort((a,b)=>b.turnover-a.turnover)
+   .slice(0,target);
+
+  if(!candidates.length){
+   throw new Error("هیچ جفت‌ارزی با شرایط انتخاب‌شده پیدا نشد.");
+  }
+
+  setStatus(
+   `فهرست دریافتی: ${tickers.length} جفت‌ارز USDT؛ `+
+   `هدف: ${candidates.length}. شروع بررسی کندل‌ها...`
+  );
+
+  results=await mapLimit(candidates,3,async coin=>{
+   // فاصله کوتاه برای کاهش فشار روی API
+   const candles=await getCandles(coin.symbol);
+   if(candles.length<5){
+    return {
+     ...coin,candles:candles.length,score:0,
+     volRatio:0,status:"داده کندلی ناکافی"
+    };
+   }
+   return scoreCoin(coin,candles);
+  },(done,total)=>{
+   if(myRun!==runId) return;
+   setStatus(`در حال بررسی کندل‌ها: ${done}/${total}`);
+   $("summary").textContent=
+    `جفت‌ارزهای دریافتی: ${tickers.length} | هدف بررسی: ${total} | پیشرفت: ${done}/${total}`;
   });
-}
 
-async function getJSON(url) {
-  let directError = "";
+  errors=results.filter(x=>x.error).length;
+  valid=results.filter(x=>!x.error && x.candles>=5).length;
+  renderRows(results.filter(x=>!x.error));
 
-  try {
-    const response = await fetch(url, {cache:"no-store"});
-    if (!response.ok) throw new Error("HTTP " + response.status);
-    return await response.json();
-  } catch (e) {
-    directError = e.message || "خطای درخواست مستقیم";
-  }
+  $("summary").textContent=
+   `جفت‌ارزهای دریافتی: ${tickers.length} | `+
+   `تعداد انتخاب‌شده: ${candidates.length} | `+
+   `دارای داده معتبر: ${valid} | خطا: ${errors} | `+
+   `داده کندلی ناکافی: ${results.filter(x=>!x.error && x.candles<5).length}`;
 
-  try {
-    const response = await fetch(PROXY + url, {
-      cache:"no-store"
-    });
-
-    if (!response.ok) {
-      throw new Error("Proxy HTTP " + response.status);
-    }
-
-    return await response.json();
-  } catch (e) {
-    throw new Error(
-      "دریافت داده ناموفق بود. مستقیم: " +
-      directError + "؛ پراکسی: " +
-      (e.message || "Load failed")
-    );
-  }
-}
-
-function unwrap(payload) {
-  if (
-    payload &&
-    (payload.result === false || payload.result === "false")
-  ) {
-    throw new Error(payload.msg || "API خطا برگرداند");
-  }
-
-  if (payload && payload.data != null) return payload.data;
-  return payload;
-}
-
-async function getTickers() {
-  const json = await getJSON(
-    API + "ticker/24hr.do?symbol=all"
+  setStatus(
+   `اسکن پایان یافت. بررسی‌شده: ${candidates.length} از ${tickers.length}. `+
+   (errors ? `خطا در ${errors} ارز؛ نتیجه کامل نیست.` : "درخواست‌ها بدون خطای ثبت‌شده پایان یافتند.")+
+   ` زمان: ${new Date().toLocaleTimeString("fa-IR")}`
   );
 
-  const data = unwrap(json);
-
-  if (!Array.isArray(data)) {
-    throw new Error(
-      "ساختار پاسخ فهرست ارزهای LBank قابل شناسایی نیست."
-    );
-  }
-
-  const allUsdt = data.map(item => {
-    const t = item.ticker || item;
-
-    return {
-      symbol: String(
-        item.symbol || t.symbol || ""
-      ).toLowerCase(),
-      price: num(t.latest || t.last || t.close),
-      change: num(t.change),
-      turnover: num(t.turnover),
-      volume: num(t.vol),
-      high: num(t.high),
-      low: num(t.low)
-    };
-  }).filter(x =>
-    x.symbol.endsWith("_usdt") && x.price > 0
-  );
-
-  // فقط نمادهایی که در فهرست اولیه MEME هستند.
-  const memeTickers = allUsdt.filter(x =>
-    MEME_SYMBOLS.has(x.symbol)
-  );
-
-  return {
-    allUsdtCount: allUsdt.length,
-    memeTickers
-  };
+ }catch(e){
+  setStatus("خطا: "+(e.message || "دریافت داده ناموفق بود"));
+  $("summary").textContent="اسکن کامل نشد.";
+  $("results").innerHTML=
+   '<tr><td colspan="7">دریافت داده ناموفق بود؛ پیام خطا را بررسی کن.</td></tr>';
+ }finally{
+  busy=false;
+  $("scan").disabled=false;
+ }
 }
 
-async function getCandles(symbol) {
-  // زمان شروع کندل‌ها بر حسب ثانیه
-  const now = Math.floor(Date.now() / 60000) * 60;
-  const start = now - 29 * 60;
-
-  const url = API + "kline.do?symbol=" +
-    encodeURIComponent(symbol) +
-    "&type=minute1&size=30&time=" + start;
-
-  const json = await getJSON(url);
-  const data = unwrap(json);
-
-  if (!Array.isArray(data)) return [];
-
-  return data.map(row => {
-    if (!Array.isArray(row) || row.length < 6) {
-      return null;
-    }
-
-    return {
-      time: num(row[0]),
-      open: num(row[1]),
-      high: num(row[2]),
-      low: num(row[3]),
-      close: num(row[4]),
-      volume: num(row[5])
-    };
-  }).filter(c => c && c.close > 0);
+function configureAuto(){
+ if(timer) clearInterval(timer);
+ timer=null;
+ const minutes=num($("interval").value);
+ if(minutes>0){
+  timer=setInterval(()=>{
+   if(!document.hidden && !busy) scan();
+  },minutes*60000);
+  setStatus("اسکن خودکار فعال شد؛ برای اسکن اول دکمه شروع را بزن.");
+ }
 }
 
-function scoreCoin(coin, candles) {
-  const c = candles;
-  const last = c[c.length - 1];
-  const previous = c[c.length - 2];
-
-  if (!last) {
-    return {
-      ...coin,
-      candles: c.length,
-      score: 0,
-      status: "داده کندلی ناکافی"
-    };
-  }
-
-  const changes = c.slice(1).map((x, i) =>
-    c[i].close
-      ? (x.close / c[i].close - 1) * 100
-      : 0
-  );
-
-  const volumes = c.map(x => x.volume);
-
-  const avgVol = volumes.length
-    ? volumes.reduce((a, b) => a + b, 0) / volumes.length
-    : 0;
-
-  const recentVolumes = volumes.slice(-5);
-  const recentVol = recentVolumes.length
-    ? recentVolumes.reduce((a, b) => a + b, 0) /
-      recentVolumes.length
-    : 0;
-
-  const older = volumes.slice(
-    0,
-    Math.max(1, volumes.length - 5)
-  );
-
-  const oldAvg = older.length
-    ? older.reduce((a, b) => a + b, 0) / older.length
-    : 0;
-
-  const volRatio = oldAvg > 0 ? recentVol / oldAvg : 0;
-
-  const candleRange = last.close
-    ? (last.high - last.low) / last.close * 100
-    : 0;
-
-  const allHighs = c.map(x => x.high);
-  const allLows = c.map(x => x.low);
-
-  const totalRange = last.close
-    ? (Math.max(...allHighs) - Math.min(...allLows)) /
-      last.close * 100
-    : 0;
-
-  const lookbackIndex = Math.max(0, c.length - 6);
-  const lookbackCandle = c[lookbackIndex];
-
-  const recentChange =
-    lookbackCandle && lookbackCandle.close
-      ? (last.close / lookbackCandle.close - 1) * 100
-      : 0;
-
-  const green = c.filter(x => x.close >= x.open).length;
-
-  const avgChange = changes.length
-    ? changes.reduce((a, b) => a + b, 0) / changes.length
-    : 0;
-
-  const absChanges = changes.map(Math.abs);
-
-  const avgAbsChange = absChanges.length
-    ? absChanges.reduce((a, b) => a + b, 0) /
-      absChanges.length
-    : 0;
-
-  const priceVsHigh = coin.high > 0
-    ? (coin.high - coin.price) / coin.high * 100
-    : 100;
-
-  const range24 = coin.high > coin.low
-    ? (coin.price - coin.low) / (coin.high - coin.low)
-    : 0.5;
-
-  const tests = [
-    coin.turnover >= 10000,
-    coin.turnover >= 50000,
-    coin.turnover >= 100000,
-    coin.change > -10 && coin.change < 10,
-    coin.change > -5 && coin.change < 5,
-    coin.change > 0,
-    coin.change < 0,
-    Math.abs(coin.change) < 3,
-    volRatio >= 1.2,
-    volRatio >= 1.5,
-    volRatio >= 2,
-    volRatio >= 3,
-    recentVol > oldAvg,
-    recentChange < 3,
-    recentChange > -3,
-    recentChange > -1 && recentChange < 1,
-    recentChange > 0,
-    recentChange < 0,
-    totalRange < 3,
-    totalRange < 5,
-    totalRange < 8,
-    candleRange < 1,
-    candleRange < 2,
-    green / Math.max(c.length, 1) > 0.5,
-    green / Math.max(c.length, 1) > 0.6,
-    last.close >= last.open,
-    previous ? last.close >= previous.close : false,
-    priceVsHigh < 5,
-    priceVsHigh > 5 && priceVsHigh < 20,
-    range24 < 0.7,
-    range24 > 0.25 && range24 < 0.75,
-    avgChange > -0.5 && avgChange < 0.5,
-    avgAbsChange < 1.5,
-    avgVol > 0 && recentVol > avgVol,
-    coin.price > 0
-  ];
-
-  const score = tests.filter(Boolean).length;
-
-  let status = "شواهد ضعیف";
-
-  if (score >= 25) status = "هم‌خوانی تکنیکال بالا";
-  else if (score >= 20) status = "قابل بررسی";
-  else if (score >= 15) status = "شواهد متوسط";
-
-  if (volRatio >= 2 && Math.abs(recentChange) < 3) {
-    status += " · افزایش حجم با حرکت محدود قیمت";
-  }
-
-  return {
-    ...coin,
-    candles: c.length,
-    avgVol,
-    volRatio,
-    recentChange,
-    score,
-    status
-  };
-}
-
-async function mapLimit(items, limit, worker) {
-  const out = new Array(items.length);
-  let index = 0;
-
-  async function runner() {
-    while (true) {
-      const i = index++;
-      if (i >= items.length) return;
-
-      try {
-        out[i] = await worker(items[i], i);
-      } catch (e) {
-        out[i] = {
-          ...items[i],
-          error: e.message || "خطا",
-          candles: 0,
-          score: 0,
-          status: "خطا در دریافت داده"
-        };
-      }
-    }
-  }
-
-  await Promise.all(
-    Array.from(
-      {length: Math.min(limit, items.length)},
-      () => runner()
-    )
-  );
-
-  return out;
-}
-
-function renderRows(rows) {
-  const filtered = rows
-    .filter(x =>
-      !x.error &&
-      x.score >= num($("minScore").value)
-    )
-    .sort((a, b) =>
-      b.score - a.score || b.turnover - a.turnover
-    );
-
-  if (!filtered.length) {
-    $("results").innerHTML =
-      '<tr><td colspan="7">نامزدی با این شرط‌ها پیدا نشد؛ حداقل امتیاز را کمتر کن.</td></tr>';
-    return;
-  }
-
-  $("results").innerHTML = filtered.map(x => {
-    const changeClass = x.change >= 0 ? "good" : "bad";
-
-    return `<tr>
-      <td><b>${x.symbol.toUpperCase()}</b></td>
-      <td>${fmt(x.price)}</td>
-      <td class="${changeClass}">${fmt(x.change)}٪</td>
-      <td>${fmt(x.turnover)}</td>
-      <td>${x.candles} کندل · ${x.volRatio.toFixed(2)}×</td>
-      <td class="score">${x.score}/35</td>
-      <td>${x.status}</td>
-    </tr>`;
-  }).join("");
-}
-
-async function scan() {
-  if (busy) return;
-
-  busy = true;
-  $("scan").disabled = true;
-
-  $("results").innerHTML =
-    '<tr><td colspan="7">در حال دریافت داده‌ها...</td></tr>';
-
-  try {
-    setStatus("مرحله ۱: دریافت فهرست معاملات LBank...");
-
-    const tickerData = await getTickers();
-    const tickers = tickerData.memeTickers;
-
-    if (!tickers.length) {
-      throw new Error(
-        "هیچ نمادی از فهرست اولیه MEME در پاسخ فعلی LBank پیدا نشد. " +
-        "ممکن است نمادها متفاوت باشند یا فهرست نیاز به به‌روزرسانی داشته باشد."
-      );
-    }
-
-    const minTurnover = Math.max(
-      0,
-      num($("minTurnover").value)
-    );
-
-    // فیلتر گردش معاملات پیش از انتخاب حداکثر ۲۰۰ ارز
-    const candidates = tickers
-      .filter(x => x.turnover >= minTurnover)
-      .sort((a, b) => b.turnover - a.turnover)
-      .slice(0, 200);
-
-    if (!candidates.length) {
-      throw new Error(
-        "هیچ ارز MEME با حداقل گردش معاملات تعیین‌شده پیدا نشد."
-      );
-    }
-
-    setStatus(
-      `جفت‌ارزهای USDT دریافتی: ${tickerData.allUsdtCount} | ` +
-      `نمادهای منطبق با فهرست MEME: ${tickers.length} | ` +
-      `انتخاب‌شده برای بررسی: ${candidates.length}`
-    );
-
-    let finished = 0;
-
-    const results = await mapLimit(
-      candidates,
-      3,
-      async coin => {
-        const candles = await getCandles(coin.symbol);
-        finished++;
-
-        setStatus(
-          `بررسی کندل‌های MEME: ${finished}/${candidates.length}`
-        );
-
-        if (candles.length < 5) {
-          return {
-            ...coin,
-            candles: candles.length,
-            score: 0,
-            volRatio: 0,
-            status: "داده کندلی ناکافی"
-          };
-        }
-
-        return scoreCoin(coin, candles);
-      }
-    );
-
-    const errors = results.filter(x => x.error).length;
-    const insufficient = results.filter(
-      x => !x.error && x.candles < 5
-    ).length;
-
-    const valid = results.filter(
-      x => !x.error && x.candles >= 5
-    );
-
-    renderRows(valid);
-
-    $("summary").textContent =
-      `کل جفت‌ارزهای USDT دریافتی: ${tickerData.allUsdtCount} | ` +
-      `نمادهای منطبق با فهرست MEME: ${tickers.length} | ` +
-      `انتخاب‌شده: ${candidates.length} | ` +
-      `بررسی معتبر: ${valid.length} | ` +
-      `داده ناکافی: ${insufficient} | خطا: ${errors}`;
-
-    if (errors || insufficient) {
-      setStatus(
-        `اسکن پایان یافت؛ ${valid.length} نتیجه معتبر، ` +
-        `${insufficient} مورد با داده ناکافی و ${errors} خطا. ` +
-        `دسته‌بندی MEME از فهرست داخلی استفاده می‌کند، نه تأیید زنده صرافی.`
-      );
-    } else {
-      setStatus(
-        "اسکن پایان یافت. زمان آخرین دریافت: " +
-        new Date().toLocaleTimeString("fa-IR") +
-        " · دسته MEME از فهرست داخلی تعیین شده است."
-      );
-    }
-
-  } catch (e) {
-    setStatus(
-      "خطا: " + (e.message || "دریافت داده ناموفق بود")
-    );
-
-    $("summary").textContent =
-      "اسکن کامل نشد؛ علت خطا در بالا نمایش داده شده است.";
-
-    $("results").innerHTML =
-      '<tr><td colspan="7">داده کافی برای نمایش نتیجه دریافت نشد.</td></tr>';
-
-  } finally {
-    busy = false;
-    $("scan").disabled = false;
-  }
-}
-
-function configureAuto() {
-  if (timer) clearInterval(timer);
-  timer = null;
-
-  const minutes = num($("interval").value);
-
-  if (minutes > 0) {
-    timer = setInterval(() => {
-      if (!document.hidden) scan();
-    }, minutes * 60 * 1000);
-
-    setStatus(
-      "اسکن خودکار فعال شد؛ برای اجرای اولین اسکن دکمه شروع را بزن."
-    );
-  }
-}
-
-$("scan").addEventListener("click", scan);
-$("interval").addEventListener("change", configureAuto);
-
-$("stop").addEventListener("click", () => {
-  if (timer) clearInterval(timer);
-  timer = null;
-  $("interval").value = "0";
-  setStatus("اسکن خودکار متوقف شد.");
+$("scan").addEventListener("click",scan);
+$("interval").addEventListener("change",configureAuto);
+$("stop").addEventListener("click",()=>{
+ if(timer) clearInterval(timer);
+ timer=null;
+ $("interval").value="0";
+ setStatus("اسکن خودکار متوقف شد.");
 });
 </script>
 </body>
